@@ -237,15 +237,101 @@ public class Controller : MonoBehaviour
 
         //TODO: Implementar BFS. Los nodos seleccionables los ponemos como selectable=true
         //Tendrás que cambiar este código por el BFS
-        for(int i = 0; i < Constants.NumTiles; i++)
+        if (!repeated_tiles.Contains(indexcurrentTile))
         {
-            tiles[i].selectable = true;
+            BFS(indexcurrentTile);    
         }
+        for (int j = 0; j < tiles[indexcurrentTile].adjacency.Count; j++)
+        {
+            tiles[tiles[indexcurrentTile].adjacency[j]].selectable = true;
+        }
+        tiles[cops[1].GetComponent<CopMove>().currentTile].selectable = false;
+        tiles[cops[0].GetComponent<CopMove>().currentTile].selectable = false;
+        if (cop)
+        {
+            
+            if(clickedCop == 1)
+            {
+                if (cops[0].GetComponent<CopMove>().currentTile == cops[1].GetComponent<CopMove>().currentTile + 1)
+                {
+                    tiles[indexcurrentTile + 2].selectable = false;
+                }
+                else if (cops[0].GetComponent<CopMove>().currentTile == cops[1].GetComponent<CopMove>().currentTile + 8)
+                {
+                    tiles[indexcurrentTile + 16].selectable = false;
+                }
+                else if (cops[0].GetComponent<CopMove>().currentTile == cops[1].GetComponent<CopMove>().currentTile - 1)
+                {
+                    tiles[indexcurrentTile - 2].selectable = false;
+                }
+                else if (cops[0].GetComponent<CopMove>().currentTile == cops[1].GetComponent<CopMove>().currentTile - 8)
+                {
+                    tiles[indexcurrentTile - 16].selectable = false;
+                }
+            }
+            else
+            {
+                if (cops[1].GetComponent<CopMove>().currentTile == cops[0].GetComponent<CopMove>().currentTile + 1)
+                {
+                    tiles[indexcurrentTile + 2].selectable = false;
+                }
+                else if (cops[1].GetComponent<CopMove>().currentTile == cops[0].GetComponent<CopMove>().currentTile + 8)
+                {
+                    tiles[indexcurrentTile + 16].selectable = false;
+                }
+                else if (cops[1].GetComponent<CopMove>().currentTile == cops[0].GetComponent<CopMove>().currentTile - 1)
+                {
+                    tiles[indexcurrentTile - 2].selectable = false;
+                }
+                else if (cops[1].GetComponent<CopMove>().currentTile == cops[0].GetComponent<CopMove>().currentTile - 8)
+                {
+                    tiles[indexcurrentTile - 16].selectable = false;
+                }
+            }
 
+        }
+        
+        if (!cop)
+        {
+            tiles[indexcurrentTile].selectable = false;
+        }
 
     }
     
-   
+    public void BFS(int indexcurrentTile)
+    {
+       
+        int first_size = tiles[indexcurrentTile].adjacency.Count;
+        for (int j = 0; j < first_size; j++)
+        {
+            
+            if ((tiles[indexcurrentTile].adjacency[j] + 8) < 64 && !tiles[indexcurrentTile].adjacency.Contains(tiles[indexcurrentTile].adjacency[j] + 8))
+            {
+                tiles[indexcurrentTile].adjacency.Add(tiles[indexcurrentTile].adjacency[j] + 8);
+               
+            }
+
+            if ((tiles[indexcurrentTile].adjacency[j] + 1) < 64 && tiles[indexcurrentTile].adjacency[j] != 7 && tiles[indexcurrentTile].adjacency[j] != 15 && tiles[indexcurrentTile].adjacency[j] != 23 && tiles[indexcurrentTile].adjacency[j] != 31 && tiles[indexcurrentTile].adjacency[j] != 39 && tiles[indexcurrentTile].adjacency[j] != 47 && tiles[indexcurrentTile].adjacency[j] != 55 && tiles[indexcurrentTile].adjacency[j] != 63 && !tiles[indexcurrentTile].adjacency.Contains(tiles[indexcurrentTile].adjacency[j] + 1))
+            {
+                tiles[indexcurrentTile].adjacency.Add(tiles[indexcurrentTile].adjacency[j] + 1);
+                
+            }
+
+            if ((tiles[indexcurrentTile].adjacency[j] - 8) > -1 && !tiles[indexcurrentTile].adjacency.Contains(tiles[indexcurrentTile].adjacency[j] - 8))
+            {
+                tiles[indexcurrentTile].adjacency.Add(tiles[indexcurrentTile].adjacency[j] - 8);
+                
+            }
+
+            if ((tiles[indexcurrentTile].adjacency[j] - 1) > -1 && tiles[indexcurrentTile].adjacency[j] != 8 && tiles[indexcurrentTile].adjacency[j] != 16 && tiles[indexcurrentTile].adjacency[j] != 24 && tiles[indexcurrentTile].adjacency[j] != 32 && tiles[indexcurrentTile].adjacency[j] != 40 && tiles[indexcurrentTile].adjacency[j] != 48 && tiles[indexcurrentTile].adjacency[j] != 56 && !tiles[indexcurrentTile].adjacency.Contains(tiles[indexcurrentTile].adjacency[j] - 1))
+            {
+                tiles[indexcurrentTile].adjacency.Add(tiles[indexcurrentTile].adjacency[j] - 1);
+               
+            } 
+        }
+        tiles[indexcurrentTile].adjacency.Remove(indexcurrentTile);
+        repeated_tiles.Add(indexcurrentTile);
+    }
     
 
     
