@@ -184,18 +184,23 @@ public class Controller : MonoBehaviour
         //List<int> position_robber = getPosition(0, false);
         List<int[]> possible_pos = getPossiblePositions(clickedTile);
         float distance = 1f;
+        float distance_cop1 = 0;
+        float distance_cop0 = 0;
         int x = 0;
         int y = 0;
         for (int i = 0; i < possible_pos.Count; i++)
         {
-            if (distance < Mathf.Sqrt(Mathf.Pow(position_cop_1[0] - possible_pos[i][0], 2) + Mathf.Pow(position_cop_1[1] - possible_pos[i][1], 2)))
+            distance_cop0 = Mathf.Sqrt(Mathf.Pow(position_cop_0[0] - possible_pos[i][0], 2) + Mathf.Pow(position_cop_0[1] - possible_pos[i][1], 2));
+            distance_cop1 = Mathf.Sqrt(Mathf.Pow(position_cop_1[0] - possible_pos[i][0], 2) + Mathf.Pow(position_cop_1[1] - possible_pos[i][1], 2));
+            if (distance < distance_cop0 + distance_cop1)
             {
-                distance = Mathf.Sqrt(Mathf.Pow(position_cop_1[0] - possible_pos[i][0], 2) + Mathf.Pow(position_cop_1[1] - possible_pos[i][1], 2));
+                distance = distance_cop0 + distance_cop1;
                 clickedTile = convertPositionToTile(possible_pos[i]);
                 x = possible_pos[i][0];
                 y = possible_pos[i][1];
             }   
         }
+        
         Debug.Log("Dsitanca ,as alejado " + distance);
         Debug.Log("Casilla mas alejada del poli1 " + clickedTile);
         Debug.Log(x + " " + y);
