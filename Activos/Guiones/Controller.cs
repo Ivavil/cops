@@ -19,6 +19,7 @@ public class Controller : MonoBehaviour
     private int state;
     private int clickedTile = -1;
     private int clickedCop = 0;
+    private List<int> repeated_tiles = new List<int>();
                     
     void Start()
     {        
