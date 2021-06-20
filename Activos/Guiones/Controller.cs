@@ -178,11 +178,31 @@ public class Controller : MonoBehaviour
         - Movemos al caco a esa casilla
         - Actualizamos la variable currentTile del caco a la nueva casilla
         */
-        int rand = Random.Range(0, tiles[clickedTile].adjacency.Count);
-        clickedTile = tiles[clickedTile].adjacency[rand];
+         List<int> position_cop_1 = getPosition(1, true);
+        List<int> position_cop_0 = getPosition(0, true);
+        //List<int> position_robber = getPosition(0, false);
+        List<int[]> possible_pos = getPossiblePositions(clickedTile);
+        float distance = 1f;
+        int x = 0;
+        int y = 0;
+        for (int i = 0; i < possible_pos.Count; i++)
+        {
+            if (distance < Mathf.Sqrt(Mathf.Pow(position_cop_1[0] - possible_pos[i][0], 2) + Mathf.Pow(position_cop_1[1] - possible_pos[i][1], 2)))
+            {
+                distance = Mathf.Sqrt(Mathf.Pow(position_cop_1[0] - possible_pos[i][0], 2) + Mathf.Pow(position_cop_1[1] - possible_pos[i][1], 2));
+                clickedTile = convertPositionToTile(possible_pos[i]);
+                x = possible_pos[i][0];
+                y = possible_pos[i][1];
+            }   
+        }
+        Debug.Log("Dsitanca ,as alejado " + distance);
+        Debug.Log("Casilla mas alejada del poli1 " + clickedTile);
+        Debug.Log(x + " " + y);
         tiles[clickedTile].current = true;
         robber.GetComponent<RobberMove>().currentTile = clickedTile;
         robber.GetComponent<RobberMove>().MoveToTile(tiles[robber.GetComponent<RobberMove>().currentTile]);
+      
+        
     }
 
     public void EndGame(bool end)
@@ -337,6 +357,166 @@ public class Controller : MonoBehaviour
         repeated_tiles.Add(indexcurrentTile);
     }
     
+    public List<int> getPosition(int cop, bool who)
+    {
+        List<int> position = new List<int>();
+        int pos_x = 0;
+        int pos_y = 0;
+        if (who)
+        {
+            if (cops[cop].GetComponent<CopMove>().currentTile >= 0 && cops[cop].GetComponent<CopMove>().currentTile <= 7)
+            {
+                pos_y = 0;
+                pos_x = cops[cop].GetComponent<CopMove>().currentTile;
+            }
+            else if (cops[cop].GetComponent<CopMove>().currentTile >= 8 && cops[cop].GetComponent<CopMove>().currentTile <= 15)
+            {
+                pos_y = 1;
+                pos_x = cops[cop].GetComponent<CopMove>().currentTile - 8;
+            }
+            else if (cops[cop].GetComponent<CopMove>().currentTile >= 16 && cops[cop].GetComponent<CopMove>().currentTile <= 23)
+            {
+                pos_y = 2;
+                pos_x = cops[cop].GetComponent<CopMove>().currentTile - 16;
+            }
+            else if (cops[cop].GetComponent<CopMove>().currentTile >= 24 && cops[cop].GetComponent<CopMove>().currentTile <= 31)
+            {
+                pos_y = 3;
+                pos_x = cops[cop].GetComponent<CopMove>().currentTile - 24;
+            }
+            else if (cops[cop].GetComponent<CopMove>().currentTile >= 32 && cops[cop].GetComponent<CopMove>().currentTile <= 39)
+            {
+                pos_y = 4;
+                pos_x = cops[cop].GetComponent<CopMove>().currentTile - 32;
+            }
+            else if (cops[cop].GetComponent<CopMove>().currentTile >= 40 && cops[cop].GetComponent<CopMove>().currentTile <= 47)
+            {
+                pos_y = 5;
+                pos_x = cops[cop].GetComponent<CopMove>().currentTile - 40;
+            }
+            else if (cops[cop].GetComponent<CopMove>().currentTile >= 48 && cops[cop].GetComponent<CopMove>().currentTile <= 55)
+            {
+                pos_y = 6;
+                pos_x = cops[cop].GetComponent<CopMove>().currentTile - 48;
+            }
+            else if (cops[cop].GetComponent<CopMove>().currentTile >= 56 && cops[cop].GetComponent<CopMove>().currentTile <= 63)
+            {
+                pos_y = 7;
+                pos_x = cops[cop].GetComponent<CopMove>().currentTile - 56;
+            }
+        }
+        else
+        {
+            if (robber.GetComponent<RobberMove>().currentTile >= 0 && robber.GetComponent<RobberMove>().currentTile <= 7)
+            {
+                pos_y = 0;
+                pos_x = robber.GetComponent<RobberMove>().currentTile;
+            }
+            else if (robber.GetComponent<RobberMove>().currentTile >= 8 && robber.GetComponent<RobberMove>().currentTile <= 15)
+            {
+                pos_y = 1;
+                pos_x = robber.GetComponent<RobberMove>().currentTile - 8;
+            }
+            else if (robber.GetComponent<RobberMove>().currentTile >= 16 && robber.GetComponent<RobberMove>().currentTile <= 23)
+            {
+                pos_y = 2;
+                pos_x = robber.GetComponent<RobberMove>().currentTile - 16;
+            }
+            else if (robber.GetComponent<RobberMove>().currentTile >= 24 && robber.GetComponent<RobberMove>().currentTile <= 31)
+            {
+                pos_y = 3;
+                pos_x = robber.GetComponent<RobberMove>().currentTile - 24;
+            }
+            else if (robber.GetComponent<RobberMove>().currentTile >= 32 && robber.GetComponent<RobberMove>().currentTile <= 39)
+            {
+                pos_y = 4;
+                pos_x = robber.GetComponent<RobberMove>().currentTile - 32;
+            }
+            else if (robber.GetComponent<RobberMove>().currentTile >= 40 && robber.GetComponent<RobberMove>().currentTile <= 47)
+            {
+                pos_y = 5;
+                pos_x = robber.GetComponent<RobberMove>().currentTile - 40;
+            }
+            else if (robber.GetComponent<RobberMove>().currentTile >= 48 && robber.GetComponent<RobberMove>().currentTile <= 55)
+            {
+                pos_y = 6;
+                pos_x = robber.GetComponent<RobberMove>().currentTile - 48;
+            }
+            else if (robber.GetComponent<RobberMove>().currentTile >= 56 && robber.GetComponent<RobberMove>().currentTile <= 63)
+            {
+                pos_y = 7;
+                pos_x = robber.GetComponent<RobberMove>().currentTile - 56;
+            }
+        }
+
+        position.Add(pos_x);
+        position.Add(pos_y);
+        return position;
+    }
+
+    public List<int[]> getPossiblePositions(int clickedTile)
+    {
+        List<int[]> list_positions = new List<int[]>();
+        List<int> position = new List<int>();
+        
+        foreach (int possibleTile in tiles[clickedTile].adjacency)
+        {
+            int pos_x = 0;
+            int pos_y = 0;
+            int[] posicion = new int[2];
+            if (possibleTile >= 0 && possibleTile <= 7)
+            {
+                pos_y = 0;
+                pos_x = possibleTile;
+            }
+            else if (possibleTile >= 8 && possibleTile <= 15)
+            {
+                pos_y = 1;
+                pos_x = possibleTile - 8;
+            }
+            else if (possibleTile >= 16 && possibleTile <= 23)
+            {
+                pos_y = 2;
+                pos_x = possibleTile - 16;
+            }
+            else if (possibleTile >= 24 && possibleTile <= 31)
+            {
+                pos_y = 3;
+                pos_x = possibleTile - 24;
+            }
+            else if (possibleTile >= 32 && possibleTile <= 39)
+            {
+                pos_y = 4;
+                pos_x = possibleTile - 32;
+            }
+            else if (possibleTile >= 40 && possibleTile <= 47)
+            {
+                pos_y = 5;
+                pos_x = possibleTile - 40;
+            }
+            else if (possibleTile >= 48 && possibleTile <= 55)
+            {
+                pos_y = 6;
+                pos_x = possibleTile - 48;
+            }
+            else if (possibleTile >= 56 && possibleTile <= 63)
+            {
+                pos_y = 7;
+                pos_x = possibleTile - 56;
+            }
+            posicion[0] = pos_x;
+            posicion[1] = pos_y;
+            list_positions.Add(posicion);
+        }
+        return list_positions;
+    }
+
+    public int convertPositionToTile(int[] position)
+    {
+        int tile = position[0] + 8 * position[1];
+        Debug.Log("Antes de coinvertir" + position[0] + " " + position[1]);
+        return tile;
+    }
 
     
 
